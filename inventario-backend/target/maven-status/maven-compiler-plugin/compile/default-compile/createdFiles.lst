@@ -1,0 +1,17 @@
+cl\uddi\inventario\domain\MovementType.class
+cl\uddi\inventario\app\Role.class
+cl\uddi\inventario\repo\TxtMovimientosRepo.class
+cl\uddi\inventario\util\RutValidator.class
+cl\uddi\inventario\app\Main.class
+cl\uddi\inventario\repo\TxtMovimientosRepo$1.class
+cl\uddi\inventario\domain\Movimiento.class
+cl\uddi\inventario\app\MenuAdmin.class
+cl\uddi\inventario\app\MenuCliente.class
+cl\uddi\inventario\domain\Compra.class
+cl\uddi\inventario\repo\RepositorioProductos.class
+cl\uddi\inventario\service\InventarioService.class
+cl\uddi\inventario\repo\RepositorioMovimientos.class
+cl\uddi\inventario\domain\Venta.class
+cl\uddi\inventario\repo\TxtProductosRepo.class
+cl\uddi\inventario\app\Session.class
+cl\uddi\inventario\domain\Producto.class

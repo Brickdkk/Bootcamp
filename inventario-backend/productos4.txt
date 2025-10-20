@@ -1,0 +1,35 @@
+1000|Queque|Panaderia|769|14|10|ACTIVE
+1001|Reineta|CarnesPescados|8209|59|9|ACTIVE
+1002|Choclo|VerdurasFrutas|8380|61|9|ACTIVE
+1003|Mix Verduras|Congelados|4064|10|10|ACTIVE
+1004|Sal Yodada|Abarrotes|3790|52|11|ACTIVE
+1005|Longaniza|CarnesPescados|566|40|0|ACTIVE
+1006|Pollo Entero|CarnesPescados|6987|13|3|ACTIVE
+1007|Yogur Griego|Lacteos|9272|23|7|ACTIVE
+1008|Pimenton|VerdurasFrutas|5867|33|12|INACTIVE
+1009|Producto Generico 10|SnacksDulces|928|21|11|ACTIVE
+1010|Filete Merluza|Congelados|1699|74|12|ACTIVE
+1011|Arroz Grado2|Abarrotes|9010|12|8|ACTIVE
+1012|Hallulla|Panaderia|3951|9|5|ACTIVE
+1013|Queso Chanco|Lacteos|1314|47|8|ACTIVE
+1014|Yogur Batido|Lacteos|7724|65|11|ACTIVE
+1015|Kuchen|Panaderia|9447|50|8|ACTIVE
+1016|Pimenton|VerdurasFrutas|4755|67|6|ACTIVE
+1017|Frutilla Congelada|Congelados|7186|13|7|ACTIVE
+1018|Producto Generico 19|SnacksDulces|4988|20|3|INACTIVE
+1019|Mantequilla|Lacteos|2995|29|5|ACTIVE
+1020|Carne Molida|CarnesPescados|6216|54|4|ACTIVE
+1021|Tomate Limachino|VerdurasFrutas|7342|65|5|ACTIVE
+1022|Producto Generico 23|SnacksSalados|4267|7|2|ACTIVE
+1023|Manzana|VerdurasFrutas|6890|30|1|ACTIVE
+1024|Cerdo Lomo|CarnesPescados|9623|8|8|ACTIVE
+1025|Zanahoria|VerdurasFrutas|9039|38|0|ACTIVE
+1026|Producto Generico 27|SnacksDulces|3601|62|4|ACTIVE
+1027|Carne Molida|CarnesPescados|2011|24|6|ACTIVE
+1028|Zanahoria|VerdurasFrutas|7588|37|9|ACTIVE
+1029|Producto Generico 30|SnacksSalados|9005|16|5|INACTIVE
+1030|Yogur Batido|Lacteos|3384|63|7|ACTIVE
+1031|Pollo Entero|CarnesPescados|4950|5|5|ACTIVE
+1032|Mix Verduras|Congelados|5877|44|6|ACTIVE
+1033|Yogur Batido|Lacteos|3748|23|3|ACTIVE
+1034|Vacuno Posta|CarnesPescados|4242|51|9|ACTIVE
