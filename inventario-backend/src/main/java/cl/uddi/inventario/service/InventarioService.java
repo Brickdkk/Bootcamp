@@ -1,69 +1,105 @@
 package cl.uddi.inventario.service;
 
 import cl.uddi.inventario.domain.*;
-import cl.uddi.inventario.repo.*;
-import java.util.*;
+import cl.uddi.inventario.repo.RepositorioMovimientos;
+import cl.uddi.inventario.repo.RepositorioProductos;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class InventarioService {
-    private final RepositorioProductos productos;
-    private final RepositorioMovimientos movimientos;
+    private final RepositorioProductos repositorioProductos;
+    private final RepositorioMovimientos repositorioMovimientos;
 
-    public InventarioService(RepositorioProductos productos, RepositorioMovimientos movimientos) {
-        this.productos = productos; this.movimientos = movimientos;
+    public InventarioService(RepositorioProductos repositorioProductos, RepositorioMovimientos repositorioMovimientos) {
+        this.repositorioProductos = repositorioProductos;
+        this.repositorioMovimientos = repositorioMovimientos;
     }
 
-    public List<Producto> listar() { return productos.listar(); }
-    public Optional<Producto> buscarSku(int sku) { return productos.porSku(sku); }
-    public List<Producto> alertasBajoStock() {
-        List<Producto> out = new ArrayList<>();
-        for (var p : productos.listar()) if (p.stock <= p.stockMin) out.add(p);
-        return out;
+    public List<Producto> listarProductos() {
+        return repositorioProductos.listar();
     }
 
-    public void venta(String rut, int sku, int cantidad, String doc, String nota) {
-        var p = productos.porSku(sku).orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        if (!p.activo()) throw new RuntimeException("Producto INACTIVE");
-        if (cantidad <= 0) throw new RuntimeException("Cantidad inválida");
-        if (p.stock < cantidad) throw new RuntimeException("Stock insuficiente");
-
-        Movimiento mv = new Venta(sku, cantidad, p.precio, doc, nota, rut);
-        p.stock = mv.aplicar(p.stock);
-        productos.upsert(p);
-        movimientos.append(mv);
+    public Optional<Producto> buscarProductoPorSku(int sku) {
+        return repositorioProductos.buscarPorSku(sku);
     }
 
-    public void compra(String rut, int sku, int cantidad, int precioUnit, String doc, String nota) {
-        var p = productos.porSku(sku).orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        if (cantidad <= 0 || precioUnit < 0) throw new RuntimeException("Valores inválidos");
-
-        Movimiento mv = new Compra(sku, cantidad, precioUnit, doc, nota, rut);
-        p.stock = mv.aplicar(p.stock);
-        productos.upsert(p);
-        movimientos.append(mv);
+    public List<Producto> obtenerAlertasBajoStock() {
+        List<Producto> productosBajoStock = new ArrayList<>();
+        for (var producto : repositorioProductos.listar()) {
+            if (producto.stock <= producto.stockMinimo) {
+                productosBajoStock.add(producto);
+            }
+        }
+        return productosBajoStock;
     }
 
-    public void agregarProducto(Producto nuevo) {
-        if (productos.porSku(nuevo.sku).isPresent()) throw new RuntimeException("SKU ya existe");
-        if (nuevo.precio < 0 || nuevo.stock < 0 || nuevo.stockMin < 0) throw new RuntimeException("Valores inválidos");
-        if (nuevo.estado == null || nuevo.estado.isBlank()) nuevo.estado = "ACTIVE";
-        productos.upsert(nuevo);
+    public void registrarVenta(String rutUsuario, int sku, int cantidad, String documento, String nota) {
+        Producto producto = repositorioProductos.buscarPorSku(sku)
+                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        if (!producto.estaActivo()) {
+            throw new RuntimeException("Producto INACTIVO");
+        }
+        if (cantidad <= 0) {
+            throw new RuntimeException("Cantidad inválida");
+        }
+        if (producto.stock < cantidad) {
+            throw new RuntimeException("Stock insuficiente");
+        }
+
+        Movimiento venta = new Venta(sku, cantidad, producto.precio, documento, nota, rutUsuario);
+        producto.stock = venta.aplicar(producto.stock);
+        repositorioProductos.actualizarOInsertar(producto);
+        repositorioMovimientos.agregar(venta);
     }
 
-    public void inactivar(int sku) {
-        var p = productos.porSku(sku).orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        p.estado = "INACTIVE"; productos.upsert(p);
+    public void registrarCompra(String rutUsuario, int sku, int cantidad, int precioUnitario, String documento, String nota) {
+        Producto producto = repositorioProductos.buscarPorSku(sku)
+                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        if (cantidad <= 0 || precioUnitario < 0) {
+            throw new RuntimeException("Valores inválidos");
+        }
+
+        Movimiento compra = new Compra(sku, cantidad, precioUnitario, documento, nota, rutUsuario);
+        producto.stock = compra.aplicar(producto.stock);
+        repositorioProductos.actualizarOInsertar(producto);
+        repositorioMovimientos.agregar(compra);
     }
 
-    public void reactivar(int sku) {
-        var p = productos.porSku(sku).orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        p.estado = "ACTIVE"; productos.upsert(p);
-    }
-    
-    public void eliminar(int sku) {
-    var p = productos.porSku(sku).orElseThrow(() -> new RuntimeException("SKU inexistente"));
-    if (p.stock > 0) throw new RuntimeException("No se puede eliminar: stock > 0");
-    productos.eliminarPorSku(sku);
+    public void agregarProducto(Producto nuevoProducto) {
+        if (repositorioProductos.buscarPorSku(nuevoProducto.sku).isPresent()) {
+            throw new RuntimeException("SKU ya existe");
+        }
+        if (nuevoProducto.precio < 0 || nuevoProducto.stock < 0 || nuevoProducto.stockMinimo < 0) {
+            throw new RuntimeException("Valores inválidos");
+        }
+        if (nuevoProducto.estado == null || nuevoProducto.estado.isBlank()) {
+            nuevoProducto.estado = "ACTIVE";
+        }
+        repositorioProductos.actualizarOInsertar(nuevoProducto);
     }
 
+    public void inactivarProducto(int sku) {
+        Producto producto = repositorioProductos.buscarPorSku(sku)
+                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        producto.estado = "INACTIVE";
+        repositorioProductos.actualizarOInsertar(producto);
+    }
+
+    public void reactivarProducto(int sku) {
+        Producto producto = repositorioProductos.buscarPorSku(sku)
+                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        producto.estado = "ACTIVE";
+        repositorioProductos.actualizarOInsertar(producto);
+    }
+
+    public void eliminarProducto(int sku) {
+        Producto producto = repositorioProductos.buscarPorSku(sku)
+                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        if (producto.stock > 0) {
+            throw new RuntimeException("No se puede eliminar: stock > 0");
+        }
+        repositorioProductos.eliminarPorSku(sku);
+    }
 }
-

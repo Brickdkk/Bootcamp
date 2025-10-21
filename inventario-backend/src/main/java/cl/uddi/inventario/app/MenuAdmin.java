@@ -5,12 +5,16 @@ import cl.uddi.inventario.service.InventarioService;
 import java.util.Scanner;
 
 public class MenuAdmin {
-    private final InventarioService svc;
+    private final InventarioService inventarioService;
     private final String rut;
-    public MenuAdmin(InventarioService svc, String rut){ this.svc=svc; this.rut=rut; }
 
-    public void run(Scanner sc){
-        while(true){
+    public MenuAdmin(InventarioService inventarioService, String rut) {
+        this.inventarioService = inventarioService;
+        this.rut = rut;
+    }
+
+    public void ejecutar(Scanner scanner) {
+        while (true) {
             System.out.println("\n== ADMIN ==");
             System.out.println("1) Agregar producto");
             System.out.println("2) Inactivar producto");
@@ -19,30 +23,54 @@ public class MenuAdmin {
             System.out.println("9) Ir a menú cliente");
             System.out.println("0) Salir");
             System.out.print("> ");
-            String op = sc.nextLine().trim();
-            try{
-                switch(op){
+            String opcion = scanner.nextLine().trim();
+            try {
+                switch (opcion) {
                     case "1" -> {
-                        Producto p = new Producto();
-                        System.out.print("SKU: "); p.sku = Integer.parseInt(sc.nextLine());
-                        System.out.print("Nombre: "); p.nombre = sc.nextLine();
-                        System.out.print("Categoría: "); p.categoria = sc.nextLine();
-                        System.out.print("Precio: "); p.precio = Integer.parseInt(sc.nextLine());
-                        System.out.print("Stock: "); p.stock = Integer.parseInt(sc.nextLine());
-                        System.out.print("Stock mínimo: "); p.stockMin = Integer.parseInt(sc.nextLine());
-                        p.estado = "ACTIVE";
-                        svc.agregarProducto(p);
-                        System.out.println("Producto agregado.");
+                        Producto nuevoProducto = new Producto();
+                        System.out.print("SKU: ");
+                        nuevoProducto.sku = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Nombre: ");
+                        nuevoProducto.nombre = scanner.nextLine();
+                        System.out.print("Categoría: ");
+                        nuevoProducto.categoria = scanner.nextLine();
+                        System.out.print("Precio: ");
+                        nuevoProducto.precio = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Stock: ");
+                        nuevoProducto.stock = Integer.parseInt(scanner.nextLine());
+                        System.out.print("Stock mínimo: ");
+                        nuevoProducto.stockMinimo = Integer.parseInt(scanner.nextLine());
+                        nuevoProducto.estado = "ACTIVE";
+                        inventarioService.agregarProducto(nuevoProducto);
+                        System.out.println("Producto agregado correctamente.");
                     }
-                    case "2" -> { System.out.print("SKU: "); int sku = Integer.parseInt(sc.nextLine()); svc.inactivar(sku); System.out.println("Inactivado."); }
-                    case "3" -> { System.out.print("SKU: "); int sku = Integer.parseInt(sc.nextLine()); svc.reactivar(sku); System.out.println("Reactivado."); }
-                    case "4" -> { System.out.print("SKU: "); int sku = Integer.parseInt(sc.nextLine()); svc.eliminar(sku); System.out.println("Eliminado.");}
-                    case "9" -> new MenuCliente(svc, rut).run(sc);
-                    case "0" -> { return; }
+                    case "2" -> {
+                        System.out.print("SKU: ");
+                        int sku = Integer.parseInt(scanner.nextLine());
+                        inventarioService.inactivarProducto(sku);
+                        System.out.println("Producto inactivado correctamente.");
+                    }
+                    case "3" -> {
+                        System.out.print("SKU: ");
+                        int sku = Integer.parseInt(scanner.nextLine());
+                        inventarioService.reactivarProducto(sku);
+                        System.out.println("Producto reactivado correctamente.");
+                    }
+                    case "4" -> {
+                        System.out.print("SKU: ");
+                        int sku = Integer.parseInt(scanner.nextLine());
+                        inventarioService.eliminarProducto(sku);
+                        System.out.println("Producto eliminado correctamente.");
+                    }
+                    case "9" -> new MenuCliente(inventarioService, rut).ejecutar(scanner);
+                    case "0" -> {
+                        return;
+                    }
                     default -> System.out.println("Opción inválida");
                 }
-            }catch(NumberFormatException e){ System.out.println("Error: "+e.getMessage()); }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
     }
 }
-

@@ -6,13 +6,15 @@ public class Producto {
     public String categoria;
     public int precio;
     public int stock;
-    public int stockMin;
+    public int stockMinimo;
     public String estado; // ACTIVE | INACTIVE
 
-    public boolean activo() { return "ACTIVE".equalsIgnoreCase(estado); }
+    public boolean estaActivo() {
+        return "ACTIVE".equalsIgnoreCase(estado);
+    }
 
-    @Override public String toString() {
-        return sku+" | "+nombre+" | "+categoria+" | $"+precio+" | stock="+stock+"/"+stockMin+" | "+estado;
+    @Override
+    public String toString() {
+        return sku + " | " + nombre + " | " + categoria + " | $" + precio + " | stock=" + stock + "/" + stockMinimo + " | " + estado;
     }
 }
-
