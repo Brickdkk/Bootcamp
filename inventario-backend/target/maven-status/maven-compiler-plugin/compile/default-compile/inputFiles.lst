@@ -1,0 +1,16 @@
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\app\Main.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\app\MenuAdmin.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\app\MenuCliente.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\app\Rol.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\app\Sesion.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\domain\Compra.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\domain\Movimiento.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\domain\Producto.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\domain\TipoMovimiento.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\domain\Venta.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\repo\RepositorioMovimientos.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\repo\RepositorioProductos.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\repo\TxtMovimientosRepo.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\repo\TxtProductosRepo.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\service\InventarioService.java
+C:\Users\segel\Downloads\Bootcamp-refactor-to-spanish-and-explain\Bootcamp-refactor-to-spanish-and-explain\inventario-backend\src\main\java\cl\uddi\inventario\util\ValidadorRut.java
