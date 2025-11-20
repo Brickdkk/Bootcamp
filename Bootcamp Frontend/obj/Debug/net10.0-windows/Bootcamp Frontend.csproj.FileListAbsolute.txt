@@ -1,0 +1,24 @@
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\MainWindow.g.cs
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\App.g.cs
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend_MarkupCompile.cache
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend_MarkupCompile.lref
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\bin\Debug\net10.0-windows\Bootcamp Frontend.exe
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\bin\Debug\net10.0-windows\Bootcamp Frontend.deps.json
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\bin\Debug\net10.0-windows\Bootcamp Frontend.runtimeconfig.json
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\bin\Debug\net10.0-windows\Bootcamp Frontend.dll
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\bin\Debug\net10.0-windows\Bootcamp Frontend.pdb
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\LoginWindow.baml
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\LoginWindow.g.cs
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\MainWindow.baml
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.g.resources
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.AssemblyInfoInputs.cache
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.AssemblyInfo.cs
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.csproj.CoreCompileInputs.cache
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.dll
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\refint\Bootcamp Frontend.dll
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.pdb
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\Bootcamp Frontend.genruntimeconfig.cache
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\ref\Bootcamp Frontend.dll
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\SuccessWindow.baml
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\SuccessWindow.g.cs
