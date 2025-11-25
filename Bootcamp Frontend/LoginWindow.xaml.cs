@@ -60,9 +60,9 @@ namespace Bootcamp_Frontend
             if (username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && 
                 password == "admin123")
             {
-                // Login exitoso - abrir SuccessWindow
-                SuccessWindow successWindow = new SuccessWindow();
-                successWindow.Show();
+                // Login exitoso - abrir DashboardWindow
+                DashboardWindow dashboardWindow = new DashboardWindow();
+                dashboardWindow.Show();
                 this.Close();
             }
             else
@@ -82,6 +82,11 @@ namespace Bootcamp_Frontend
         {
             ErrorMessageTextBlock.Text = message;
             ErrorMessageTextBlock.Visibility = Visibility.Visible;
+        }
+
+        private void UsernameTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            
         }
     }
 }
