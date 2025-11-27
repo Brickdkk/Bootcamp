@@ -1,11 +1,16 @@
 cl\uddi\inventario\app\Rol.class
+cl\uddi\inventario\controller\InventarioController.class
+cl\uddi\inventario\controller\InventarioController$LoginRequest.class
 cl\uddi\inventario\domain\TipoMovimiento.class
 cl\uddi\inventario\repo\TxtMovimientosRepo.class
 cl\uddi\inventario\app\Main.class
 cl\uddi\inventario\util\ValidadorRut.class
 cl\uddi\inventario\app\Sesion.class
+cl\uddi\inventario\controller\InventarioController$VentaRequest.class
 cl\uddi\inventario\repo\TxtMovimientosRepo$1.class
+cl\uddi\inventario\InventarioApiApplication.class
 cl\uddi\inventario\domain\Movimiento.class
+cl\uddi\inventario\config\AppConfig.class
 cl\uddi\inventario\app\MenuAdmin.class
 cl\uddi\inventario\app\MenuCliente.class
 cl\uddi\inventario\domain\Compra.class
