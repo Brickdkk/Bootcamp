@@ -1,92 +1,53 @@
+using System;
 using System.Windows;
 using System.Windows.Input;
+using Bootcamp_Frontend.Services;
 
 namespace Bootcamp_Frontend
 {
-    
     public partial class LoginWindow : Window
     {
+        private readonly ApiService _apiService = new ApiService();
+
         public LoginWindow()
         {
             InitializeComponent();
             
-            // la ventana
-            this.MouseDown += (s, e) =>
-            {
-                if (e.ChangedButton == MouseButton.Left)
-                    this.DragMove();
-            };
-            
-            // de username pasa a password
-            UsernameTextBox.KeyDown += (s, e) =>
-            {
-                if (e.Key == Key.Enter)
-                    PasswordBox.Focus();
-            };
-            
-            // de password intenta login
-            PasswordBox.KeyDown += (s, e) =>
-            {
-                if (e.Key == Key.Enter)
-                    LoginButton_Click(this, new RoutedEventArgs());
-            };
+            this.MouseDown += (s, e) => { if (e.ChangedButton == MouseButton.Left) this.DragMove(); };
+            UsernameTextBox.KeyDown += (s, e) => { if (e.Key == Key.Enter) PasswordBox.Focus(); };
+            PasswordBox.KeyDown += (s, e) => { if (e.Key == Key.Enter) LoginButton_Click(this, new RoutedEventArgs()); };
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Limpiar mensaje de error previo
             ErrorMessageTextBlock.Visibility = Visibility.Collapsed;
-            ErrorMessageTextBlock.Text = string.Empty;
 
-            string username = UsernameTextBox.Text.Trim();
-            string password = PasswordBox.Password;
-
-            // Validacion basica
-            if (string.IsNullOrWhiteSpace(username))
+            try
             {
-                ShowError("Por favor, ingresa tu usuario.");
-                UsernameTextBox.Focus();
-                return;
+                bool exito = await _apiService.LoginAsync(UsernameTextBox.Text.Trim(), PasswordBox.Password);
+                
+                if (exito)
+                {
+                    new DashboardWindow().Show();
+                    this.Close();
+                }
+                else
+                {
+                    ErrorMessageTextBlock.Text = "Usuario o contrasena incorrectos.";
+                    ErrorMessageTextBlock.Visibility = Visibility.Visible;
+                    PasswordBox.Clear();
+                }
             }
-
-            if (string.IsNullOrWhiteSpace(password))
+            catch (Exception ex)
             {
-                ShowError("Por favor, ingresa tu contrasena.");
-                PasswordBox.Focus();
-                return;
-            }
-
-            // Ejemplo temporal de validacion local
-            if (username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && 
-                password == "admin123")
-            {
-                // Login exitoso - abrir DashboardWindow
-                DashboardWindow dashboardWindow = new DashboardWindow();
-                dashboardWindow.Show();
-                this.Close();
-            }
-            else
-            {
-                ShowError("Usuario o contrasena incorrectos.");
-                PasswordBox.Clear();
-                PasswordBox.Focus();
+                ErrorMessageTextBlock.Text = ex.Message;
+                ErrorMessageTextBlock.Visibility = Visibility.Visible;
             }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        private void ShowError(string message)
-        {
-            ErrorMessageTextBlock.Text = message;
-            ErrorMessageTextBlock.Visibility = Visibility.Visible;
-        }
-
-        private void UsernameTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-            
         }
     }
 }

@@ -86,7 +86,7 @@
                          TextAlignment="Center"
                          Margin="0,0,0,40"/>
                 
-                <Button Style="{StaticResource SidebarButton}">
+                <Button Style="{StaticResource SidebarButton}" Click="ImportarProductos_Click">
                     <StackPanel Orientation="Horizontal">
                         <Path Data="M 5,0 L 15,0 L 20,5 L 20,20 L 0,20 L 0,5 Z M 5,0 L 5,5 L 0,5" 
                               Fill="{StaticResource PrimaryGreen}" 
@@ -95,12 +95,12 @@
                               Margin="0,0,12,0"/>
                         <StackPanel>
                             <TextBlock Text="Importar Productos" FontWeight="SemiBold" FontSize="13"/>
-                            <TextBlock Text="Archivo CSV/Excel" Foreground="{StaticResource LightText}" FontSize="11"/>
+                            <TextBlock Text="Archivo TXT" Foreground="{StaticResource LightText}" FontSize="11"/>
                         </StackPanel>
                     </StackPanel>
                 </Button>
                 
-                <Button Style="{StaticResource SidebarButton}">
+                <Button Style="{StaticResource SidebarButton}" Click="ImportarMovimientos_Click">
                     <StackPanel Orientation="Horizontal">
                         <Path Data="M 5,0 L 15,0 L 20,5 L 20,20 L 0,20 L 0,5 Z M 5,0 L 5,5 L 0,5" 
                               Fill="{StaticResource PrimaryGreen}" 
@@ -109,12 +109,12 @@
                               Margin="0,0,12,0"/>
                         <StackPanel>
                             <TextBlock Text="Importar Movimientos" FontWeight="SemiBold" FontSize="13"/>
-                            <TextBlock Text="Archivo CSV/Excel" Foreground="{StaticResource LightText}" FontSize="11"/>
+                            <TextBlock Text="Archivo TXT" Foreground="{StaticResource LightText}" FontSize="11"/>
                         </StackPanel>
                     </StackPanel>
                 </Button>
                 
-                <Button Style="{StaticResource SidebarButton}">
+                <Button Style="{StaticResource SidebarButton}" Click="ExportarProductos_Click">
                     <StackPanel Orientation="Horizontal">
                         <Path Data="M 10,2 L 10,8 M 2,10 L 18,10 M 10,12 L 10,18 M 10,0 L 20,10 L 10,20 L 0,10 Z" 
                               Stroke="{StaticResource PrimaryGreen}" 
@@ -124,12 +124,12 @@
                               Margin="0,0,12,0"/>
                         <StackPanel>
                             <TextBlock Text="Exportar Productos" FontWeight="SemiBold" FontSize="13"/>
-                            <TextBlock Text="Descargar CSV" Foreground="{StaticResource LightText}" FontSize="11"/>
+                            <TextBlock Text="Descargar TXT" Foreground="{StaticResource LightText}" FontSize="11"/>
                         </StackPanel>
                     </StackPanel>
                 </Button>
                 
-                <Button Style="{StaticResource SidebarButton}">
+                <Button Style="{StaticResource SidebarButton}" Click="ExportarMovimientos_Click">
                     <StackPanel Orientation="Horizontal">
                         <Path Data="M 10,2 L 10,8 M 2,10 L 18,10 M 10,12 L 10,18 M 10,0 L 20,10 L 10,20 L 0,10 Z" 
                               Stroke="{StaticResource PrimaryGreen}" 
@@ -139,7 +139,7 @@
                               Margin="0,0,12,0"/>
                         <StackPanel>
                             <TextBlock Text="Exportar Movimientos" FontWeight="SemiBold" FontSize="13"/>
-                            <TextBlock Text="Descargar CSV" Foreground="{StaticResource LightText}" FontSize="11"/>
+                            <TextBlock Text="Descargar TXT" Foreground="{StaticResource LightText}" FontSize="11"/>
                         </StackPanel>
                     </StackPanel>
                 </Button>
@@ -160,7 +160,7 @@
                          Margin="0,0,0,40"/>
                 
                 <UniformGrid Columns="3" Rows="2">
-                    <Border Style="{StaticResource DashboardCard}">
+                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="AnadirProducto_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
                                     Background="#E8F8F4" 
@@ -188,7 +188,7 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Style="{StaticResource DashboardCard}">
+                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="EliminarProducto_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
                                     Background="#FFE8E8" 
@@ -216,7 +216,7 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Style="{StaticResource DashboardCard}">
+                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="ConsultarStock_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
                                     Background="#E8F0FF" 
@@ -244,7 +244,7 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Style="{StaticResource DashboardCard}">
+                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="ModificarStock_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
                                     Background="#FFF4E8" 
@@ -271,7 +271,7 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Style="{StaticResource DashboardCard}">
+                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="ConsultarInventario_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
                                     Background="#F0E8FF" 
@@ -299,7 +299,7 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Style="{StaticResource DashboardCard}">
+                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="RepositorioMovimientos_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
                                     Background="#E8F8F8" 
