@@ -1,0 +1,15 @@
+<Window x:Class="Bootcamp_Frontend.MovimientosWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="InvenPro - Historial de Movimientos" 
+        Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="Historial de Movimientos" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+            <DataGrid x:Name="MovimientosDataGrid" Height="500" AutoGenerateColumns="True" IsReadOnly="True"/>
+        </StackPanel>
+    </Grid>
+</Window>

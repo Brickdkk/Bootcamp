@@ -21,3 +21,5 @@ C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.
 C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\DashboardWindow.g.cs
 C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\AnadirProductoWindow.baml
 C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\AnadirProductoWindow.g.cs
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\MovimientosWindow.baml
+C:\Users\segel\source\repos\Bootcamp Frontend\Bootcamp Frontend\obj\Debug\net10.0-windows\MovimientosWindow.g.cs

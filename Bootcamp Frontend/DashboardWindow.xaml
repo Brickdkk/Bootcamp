@@ -159,7 +159,9 @@
                          Foreground="{StaticResource PrimaryGreen}"
                          Margin="0,0,0,40"/>
                 
-                <UniformGrid Columns="3" Rows="2">
+                <DataGrid x:Name="ProductosDataGrid" Height="300" Margin="0,0,0,20" AutoGenerateColumns="True" IsReadOnly="True"/>
+                
+                <UniformGrid Columns="2" Rows="2">
                     <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="AnadirProducto_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
@@ -216,34 +218,6 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="ConsultarStock_Click">
-                        <StackPanel>
-                            <Border Width="60" Height="60" 
-                                    Background="#E8F0FF" 
-                                    CornerRadius="30"
-                                    Margin="0,0,0,20">
-                                <Path Data="M 2,8 L 2,18 L 18,18 L 18,8 M 6,8 L 6,4 L 14,4 L 14,8 M 8,11 L 12,11" 
-                                      Stroke="#3498DB" 
-                                      StrokeThickness="2"
-                                      Width="24" Height="24" 
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-                            </Border>
-                            
-                            <TextBlock Text="Consultar Stock" 
-                                     FontSize="20" 
-                                     FontWeight="SemiBold"
-                                     Foreground="{StaticResource DarkText}"
-                                     Margin="0,0,0,10"/>
-                            
-                            <TextBlock Text="Verifica el stock de un producto" 
-                                     FontSize="14" 
-                                     Foreground="{StaticResource LightText}"
-                                     TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Border>
-                    
                     <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="ModificarStock_Click">
                         <StackPanel>
                             <Border Width="60" Height="60" 
@@ -265,34 +239,6 @@
                                      Margin="0,0,0,10"/>
                             
                             <TextBlock Text="Actualiza la cantidad de productos" 
-                                     FontSize="14" 
-                                     Foreground="{StaticResource LightText}"
-                                     TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Border>
-                    
-                    <Border Style="{StaticResource DashboardCard}" MouseLeftButtonDown="ConsultarInventario_Click">
-                        <StackPanel>
-                            <Border Width="60" Height="60" 
-                                    Background="#F0E8FF" 
-                                    CornerRadius="30"
-                                    Margin="0,0,0,20">
-                                <Path Data="M 3,8 L 17,8 M 3,12 L 17,12 M 3,16 L 17,16 M 7,8 L 7,4 M 13,8 L 13,4" 
-                                      Stroke="#9B59B6" 
-                                      StrokeThickness="2"
-                                      Width="24" Height="24" 
-                                      Stretch="Uniform"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
-                            </Border>
-                            
-                            <TextBlock Text="Consultar Inventario" 
-                                     FontSize="20" 
-                                     FontWeight="SemiBold"
-                                     Foreground="{StaticResource DarkText}"
-                                     Margin="0,0,0,10"/>
-                            
-                            <TextBlock Text="Ver todos los productos registrados" 
                                      FontSize="14" 
                                      Foreground="{StaticResource LightText}"
                                      TextWrapping="Wrap"/>

@@ -1,9 +1,10 @@
-using System;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using System.IO;
+using System.Linq;
 using Bootcamp_Frontend.Services;
+using Microsoft.VisualBasic;
 
 namespace Bootcamp_Frontend
 {
@@ -14,84 +15,112 @@ namespace Bootcamp_Frontend
         public DashboardWindow()
         {
             InitializeComponent();
+            CargarTabla();
         }
 
-        private void ImportarProductos_Click(object sender, RoutedEventArgs e)
+        public async void CargarTabla()
+        {
+            var productos = await _apiService.ObtenerProductosAsync();
+            ProductosDataGrid.ItemsSource = productos;
+            MessageBox.Show($"Productos cargados: {productos.Count}");
+        }
+
+        private async void ImportarProductos_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog { Filter = "Archivos de texto (*.txt)|*.txt" };
-            if (dialog.ShowDialog() == true)
+            dialog.ShowDialog();
+            
+            var lineas = File.ReadAllLines(dialog.FileName);
+            
+            foreach (var linea in lineas)
             {
-                string contenido = File.ReadAllText(dialog.FileName);
-                MessageBox.Show($"Archivo: {dialog.FileName}\nLineas: {contenido.Split('\n').Length}", "Importar Productos");
+                var partes = linea.Split('|');
+                var producto = new Models.Producto
+                {
+                    Sku = int.Parse(partes[0]),
+                    Nombre = partes[1],
+                    Stock = int.Parse(partes[2]),
+                    Precio = double.Parse(partes[3])
+                };
+                await _apiService.AgregarProductoAsync(producto);
             }
+            
+            MessageBox.Show("Productos importados");
+            CargarTabla();
         }
 
-        private void ImportarMovimientos_Click(object sender, RoutedEventArgs e)
+        private async void ImportarMovimientos_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog { Filter = "Archivos de texto (*.txt)|*.txt" };
-            if (dialog.ShowDialog() == true)
+            dialog.ShowDialog();
+            
+            var lineas = File.ReadAllLines(dialog.FileName);
+            
+            foreach (var linea in lineas)
             {
-                string contenido = File.ReadAllText(dialog.FileName);
-                MessageBox.Show($"Archivo: {dialog.FileName}\nLineas: {contenido.Split('\n').Length}", "Importar Movimientos");
+                var partes = linea.Split('|');
+                string rut = partes[0];
+                int sku = int.Parse(partes[1]);
+                int cantidad = int.Parse(partes[2]);
+                
+                await _apiService.RegistrarVentaAsync(rut, sku, cantidad);
             }
+            
+            MessageBox.Show("Movimientos importados");
+            CargarTabla();
         }
 
-        private void ExportarProductos_Click(object sender, RoutedEventArgs e)
+        private async void ExportarProductos_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog { Filter = "Archivos de texto (*.txt)|*.txt", FileName = "productos.txt" };
-            if (dialog.ShowDialog() == true)
-            {
-                File.WriteAllText(dialog.FileName, "ID|Nombre|Cantidad|Precio\n1|Laptop|10|1200.00\n2|Mouse|50|25.00");
-                MessageBox.Show($"Exportado: {dialog.FileName}", "Exportar Productos");
-            }
+            dialog.ShowDialog();
+            
+            var productos = await _apiService.ObtenerProductosAsync();
+            var lineas = productos.Select(p => $"{p.Sku}|{p.Nombre}|{p.Stock}|{p.Precio}");
+            
+            File.WriteAllText(dialog.FileName, string.Join("\n", lineas));
+            MessageBox.Show("Productos exportados");
         }
 
-        private void ExportarMovimientos_Click(object sender, RoutedEventArgs e)
+        private async void ExportarMovimientos_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog { Filter = "Archivos de texto (*.txt)|*.txt", FileName = "movimientos.txt" };
-            if (dialog.ShowDialog() == true)
-            {
-                File.WriteAllText(dialog.FileName, "Fecha|Tipo|Producto|Cantidad\n2025-01-20|Entrada|Laptop|5\n2025-01-20|Salida|Mouse|10");
-                MessageBox.Show($"Exportado: {dialog.FileName}", "Exportar Movimientos");
-            }
+            dialog.ShowDialog();
+            
+            var productos = await _apiService.ObtenerProductosAsync();
+            var lineas = productos.Select(p => $"{p.Sku}|{p.Nombre}|{p.Stock}");
+            
+            File.WriteAllText(dialog.FileName, string.Join("\n", lineas));
+            MessageBox.Show("Movimientos exportados");
         }
 
         private void AnadirProducto_Click(object sender, MouseButtonEventArgs e)
         {
-            new AnadirProductoWindow().ShowDialog();
+            new AnadirProductoWindow(_apiService, this).ShowDialog();
         }
 
-        private void EliminarProducto_Click(object sender, MouseButtonEventArgs e)
+        private async void EliminarProducto_Click(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Eliminar Producto", "InvenPro");
+            string sku = Interaction.InputBox("Ingresa el SKU del producto a eliminar:", "Eliminar");
+            await _apiService.EliminarProductoAsync(int.Parse(sku));
+            MessageBox.Show("Producto eliminado");
+            CargarTabla();
         }
 
-        private void ConsultarStock_Click(object sender, MouseButtonEventArgs e)
+        private async void ModificarStock_Click(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Consultar Stock", "InvenPro");
-        }
-
-        private void ModificarStock_Click(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Modificar Stock", "InvenPro");
-        }
-
-        private async void ConsultarInventario_Click(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                var productos = await _apiService.ObtenerProductosAsync();
-                MessageBox.Show($"Productos obtenidos: {productos.Count}\n\nEjemplo:\n{productos[0].Nombre} - Stock: {productos[0].Stock}", "Consultar Inventario");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
+            string sku = Interaction.InputBox("SKU del producto:", "Modificar Stock");
+            string cantidad = Interaction.InputBox("Cantidad a agregar:", "Modificar Stock");
+            string precio = Interaction.InputBox("Precio de compra:", "Modificar Stock");
+            
+            await _apiService.ModificarStockAsync(int.Parse(sku), int.Parse(cantidad), int.Parse(precio));
+            MessageBox.Show("Stock modificado");
+            CargarTabla();
         }
 
         private void RepositorioMovimientos_Click(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("Repositorio de Movimientos", "InvenPro");
+            new MovimientosWindow(_apiService).ShowDialog();
         }
     }
 }

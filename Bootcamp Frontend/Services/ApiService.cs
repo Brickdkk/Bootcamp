@@ -13,29 +13,41 @@ namespace Bootcamp_Frontend.Services
 
         public async Task<bool> LoginAsync(string username, string password)
         {
-            try
-            {
-                var request = new LoginRequest { Username = username, Password = password };
-                var response = await _httpClient.PostAsJsonAsync("/api/login", request);
-                return response.IsSuccessStatusCode;
-            }
-            catch
-            {
-                throw new Exception("Error al conectar con el servidor. Verifica que el backend este corriendo.");
-            }
+            var request = new { username, password };
+            var response = await _httpClient.PostAsJsonAsync("/api/login", request);
+            return response.IsSuccessStatusCode;
         }
 
         public async Task<List<Producto>> ObtenerProductosAsync()
         {
-            try
-            {
-                var productos = await _httpClient.GetFromJsonAsync<List<Producto>>("/api/productos");
-                return productos ?? new List<Producto>();
-            }
-            catch
-            {
-                throw new Exception("Error al obtener productos. Verifica que el backend este corriendo.");
-            }
+            return await _httpClient.GetFromJsonAsync<List<Producto>>("/api/productos");
+        }
+
+        public async Task AgregarProductoAsync(Producto producto)
+        {
+            await _httpClient.PostAsJsonAsync("/api/productos", producto);
+        }
+
+        public async Task EliminarProductoAsync(int sku)
+        {
+            await _httpClient.DeleteAsync($"/api/productos/{sku}");
+        }
+
+        public async Task ModificarStockAsync(int sku, int cantidad, int precio)
+        {
+            var request = new { sku, cantidad, precio };
+            await _httpClient.PostAsJsonAsync("/api/compra", request);
+        }
+
+        public async Task RegistrarVentaAsync(string rut, int sku, int cantidad)
+        {
+            var request = new { rut, sku, cantidad };
+            await _httpClient.PostAsJsonAsync("/api/venta", request);
+        }
+
+        public async Task<List<Movimiento>> ObtenerMovimientosAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Movimiento>>("/api/movimientos");
         }
     }
 }
