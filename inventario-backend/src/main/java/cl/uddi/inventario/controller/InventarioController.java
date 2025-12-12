@@ -1,5 +1,6 @@
 package cl.uddi.inventario.controller;
 
+import cl.uddi.inventario.domain.Movimiento;
 import cl.uddi.inventario.domain.Producto;
 import cl.uddi.inventario.service.InventarioService;
 import org.springframework.http.ResponseEntity;
@@ -9,78 +10,93 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // Permite que tu aplicación WPF (C#) se conecte sin bloqueos
+@CrossOrigin(origins = "*") 
 public class InventarioController {
 
     private final InventarioService service;
 
-    // Inyección de dependencias del Servicio
     public InventarioController(InventarioService service) {
         this.service = service;
     }
 
-    // ==========================================
-    // 1. ENDPOINT DE PRODUCTOS (Para el Dashboard)
-    // URL: GET http://localhost:8080/api/productos
-    // ==========================================
     @GetMapping("/productos")
     public List<Producto> obtenerProductos() {
         return service.listarProductos();
     }
 
-    // ==========================================
-    // 2. ENDPOINT DE LOGIN (Para LoginWindow)
-    // URL: POST http://localhost:8080/api/login
-    // ==========================================
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
-        // Aquí simulamos la validación.
-        // Si el usuario es "admin" y la clave "admin123", retornamos éxito (200 OK).
-        if ("admin".equalsIgnoreCase(request.username) && "admin123".equals(request.password)) {
-            return ResponseEntity.ok("LOGIN_EXITOSO");
-        }
-        
-        // Si no, retornamos error 401 (Unauthorized)
-        return ResponseEntity.status(401).body("Credenciales incorrectas");
-    }
-
-    // ==========================================
-    // 3. ENDPOINT DE VENTA (Para futura funcionalidad)
-    // URL: POST http://localhost:8080/api/venta
-    // ==========================================
-    @PostMapping("/venta")
-    public ResponseEntity<String> registrarVenta(@RequestBody VentaRequest request) {
+    // NUEVO: Endpoint para borrar producto
+    @DeleteMapping("/productos/{sku}")
+    public ResponseEntity<String> eliminarProducto(@PathVariable int sku) {
         try {
-            // Llamamos a tu lógica original de Java para descontar stock
-            service.registrarVenta(
-                request.rut, 
-                request.sku, 
-                request.cantidad, 
-                "BOLETA-API", 
-                "Venta desde WPF"
-            );
-            return ResponseEntity.ok("Venta realizada con éxito");
-        } catch (RuntimeException e) {
-            // Si falta stock o el producto no existe, devolvemos el error
+            service.eliminarProducto(sku);
+            return ResponseEntity.ok("Producto eliminado");
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
 
-    // ==========================================
-    // CLASES AUXILIARES (DTOs)
-    // Sirven para recibir los datos JSON que envía C#
-    // ==========================================
-    
-    // Estructura de datos para el Login
+    // NUEVO: Endpoint para agregar producto
+    @PostMapping("/productos")
+    public ResponseEntity<String> agregarProducto(@RequestBody Producto p) {
+        try {
+            service.agregarProducto(p);
+            return ResponseEntity.ok("Producto agregado");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        if ("admin".equalsIgnoreCase(request.username) && "admin123".equals(request.password)) {
+            return ResponseEntity.ok("LOGIN_EXITOSO");
+        }
+        return ResponseEntity.status(401).body("Credenciales incorrectas");
+    }
+
+    @PostMapping("/venta")
+    public ResponseEntity<String> registrarVenta(@RequestBody VentaRequest request) {
+        try {
+            service.registrarVenta(request.rut, request.sku, request.cantidad, "BOLETA-API", "Venta desde WPF");
+            return ResponseEntity.ok("Venta OK");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // NUEVO: Endpoint para Modificar Stock (Compra)
+    @PostMapping("/compra")
+    public ResponseEntity<String> registrarCompra(@RequestBody CompraRequest request) {
+        try {
+            // Usamos "admin" como rut genérico ya que la ventana de modificar stock no pide rut
+            service.registrarCompra("admin", request.sku, request.cantidad, request.precio, "FACTURA-API", "Compra desde WPF");
+            return ResponseEntity.ok("Stock modificado");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // NUEVO: Endpoint para el Historial
+    @GetMapping("/movimientos")
+    public List<Movimiento> obtenerMovimientos() {
+        return service.listarMovimientos();
+    }
+
+    // CLASES DTO (Para recibir JSON)
     static class LoginRequest {
         public String username;
         public String password;
     }
 
-    // Estructura de datos para la Venta
     static class VentaRequest {
         public String rut;
         public int sku;
         public int cantidad;
+    }
+    
+    static class CompraRequest {
+        public int sku;
+        public int cantidad;
+        public int precio;
     }
 }

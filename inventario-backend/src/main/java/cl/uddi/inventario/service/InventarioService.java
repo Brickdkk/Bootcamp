@@ -20,6 +20,11 @@ public class InventarioService {
     public List<Producto> listarProductos() {
         return repositorioProductos.listar();
     }
+    
+    // NUEVO: Para el historial
+    public List<Movimiento> listarMovimientos() {
+        return repositorioMovimientos.listar();
+    }
 
     public Optional<Producto> buscarProductoPorSku(int sku) {
         return repositorioProductos.buscarPorSku(sku);
@@ -27,17 +32,21 @@ public class InventarioService {
 
     public List<Producto> obtenerAlertasBajoStock() {
         List<Producto> productosBajoStock = new ArrayList<>();
-        for (var producto : repositorioProductos.listar()) {
-            if (producto.stock <= producto.stockMinimo) {
-                productosBajoStock.add(producto);
+        List<Producto> todos = repositorioProductos.listar();
+        for (Producto p : todos) {
+            if (p.stock <= p.stockMinimo) {
+                productosBajoStock.add(p);
             }
         }
         return productosBajoStock;
     }
 
     public void registrarVenta(String rutUsuario, int sku, int cantidad, String documento, String nota) {
-        Producto producto = repositorioProductos.buscarPorSku(sku)
-                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        Optional<Producto> op = repositorioProductos.buscarPorSku(sku);
+        if (op.isEmpty()) {
+            throw new RuntimeException("SKU inexistente");
+        }
+        Producto producto = op.get();
         if (!producto.estaActivo()) {
             throw new RuntimeException("Producto INACTIVO");
         }
@@ -55,8 +64,11 @@ public class InventarioService {
     }
 
     public void registrarCompra(String rutUsuario, int sku, int cantidad, int precioUnitario, String documento, String nota) {
-        Producto producto = repositorioProductos.buscarPorSku(sku)
-                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
+        Optional<Producto> op = repositorioProductos.buscarPorSku(sku);
+        if (op.isEmpty()) {
+            throw new RuntimeException("SKU inexistente");
+        }
+        Producto producto = op.get();
         if (cantidad <= 0 || precioUnitario < 0) {
             throw new RuntimeException("Valores inválidos");
         }
@@ -71,35 +83,37 @@ public class InventarioService {
         if (repositorioProductos.buscarPorSku(nuevoProducto.sku).isPresent()) {
             throw new RuntimeException("SKU ya existe");
         }
-        if (nuevoProducto.precio < 0 || nuevoProducto.stock < 0 || nuevoProducto.stockMinimo < 0) {
-            throw new RuntimeException("Valores inválidos");
-        }
-        if (nuevoProducto.estado == null || nuevoProducto.estado.isBlank()) {
+        if (nuevoProducto.precio < 0) nuevoProducto.precio = 0;
+        if (nuevoProducto.estado == null || nuevoProducto.estado.equals("")) {
             nuevoProducto.estado = "ACTIVE";
         }
         repositorioProductos.actualizarOInsertar(nuevoProducto);
     }
 
     public void inactivarProducto(int sku) {
-        Producto producto = repositorioProductos.buscarPorSku(sku)
-                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        producto.estado = "INACTIVE";
-        repositorioProductos.actualizarOInsertar(producto);
+        Optional<Producto> op = repositorioProductos.buscarPorSku(sku);
+        if (op.isPresent()) {
+            Producto p = op.get();
+            p.estado = "INACTIVE";
+            repositorioProductos.actualizarOInsertar(p);
+        }
     }
 
     public void reactivarProducto(int sku) {
-        Producto producto = repositorioProductos.buscarPorSku(sku)
-                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        producto.estado = "ACTIVE";
-        repositorioProductos.actualizarOInsertar(producto);
+        Optional<Producto> op = repositorioProductos.buscarPorSku(sku);
+        if (op.isPresent()) {
+            Producto p = op.get();
+            p.estado = "ACTIVE";
+            repositorioProductos.actualizarOInsertar(p);
+        }
     }
 
     public void eliminarProducto(int sku) {
-        Producto producto = repositorioProductos.buscarPorSku(sku)
-                .orElseThrow(() -> new RuntimeException("SKU inexistente"));
-        if (producto.stock > 0) {
-            throw new RuntimeException("No se puede eliminar: stock > 0");
+        Optional<Producto> op = repositorioProductos.buscarPorSku(sku);
+        if (op.isPresent()) {
+            repositorioProductos.eliminarPorSku(sku);
+        } else {
+            throw new RuntimeException("No existe producto para eliminar");
         }
-        repositorioProductos.eliminarPorSku(sku);
     }
 }

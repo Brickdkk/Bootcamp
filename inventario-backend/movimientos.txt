@@ -1,0 +1,1 @@
+COMPRA|9080|1|1990|FACTURA-API|Compra desde WPF|admin

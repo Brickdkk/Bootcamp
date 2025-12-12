@@ -1,1 +1,2 @@
 9010|leche chocolate|Lacteos|1990|10|5|ACTIVE
+9080|leche frutilla|null|1990|11|0|ACTIVE

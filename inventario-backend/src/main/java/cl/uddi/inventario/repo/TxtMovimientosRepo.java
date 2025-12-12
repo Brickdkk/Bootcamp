@@ -1,64 +1,94 @@
 package cl.uddi.inventario.repo;
 
 import cl.uddi.inventario.domain.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.time.Instant;
+import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TxtMovimientosRepo implements RepositorioMovimientos {
     private final Path rutaArchivo;
+    private final List<Movimiento> cache = new ArrayList<>();
 
     public TxtMovimientosRepo(String nombreArchivo) {
         this.rutaArchivo = Paths.get(nombreArchivo);
+        cargar();
+    }
+
+    private void cargar() {
+        cache.clear();
+        if (!Files.exists(rutaArchivo)) return;
+        
+        try (BufferedReader br = Files.newBufferedReader(rutaArchivo)) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                if (linea.isBlank()) continue;
+                String[] campos = linea.split("\\|", -1);
+                // Formato esperado: TIPO|SKU|CANTIDAD|PRECIO|DOCUMENTO|NOTA|RUT
+                if (campos.length < 7) continue;
+
+                String tipo = campos[0];
+                int sku = Integer.parseInt(campos[1]);
+                int cant = Integer.parseInt(campos[2]);
+                int precio = Integer.parseInt(campos[3]);
+                String doc = campos[4];
+                String nota = campos[5];
+                String rut = campos[6];
+
+                Movimiento m;
+                if ("VENTA".equalsIgnoreCase(tipo)) {
+                    m = new Venta(sku, cant, precio, doc, nota, rut);
+                } else {
+                    m = new Compra(sku, cant, precio, doc, nota, rut);
+                }
+                cache.add(m);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cargar movimientos", e);
+        }
+    }
+
+    private void guardar() {
+        try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(rutaArchivo))) {
+            for (Movimiento m : cache) {
+                String tipo = (m instanceof Venta) ? "VENTA" : "COMPRA";
+                // Asumimos que los campos son públicos o tienen getters, 
+                // ajustamos a acceso directo por ser del mismo paquete/diseño simple
+                pw.printf("%s|%d|%d|%d|%s|%s|%s%n",
+                        tipo,
+                        m.sku,
+                        m.cantidad,
+                        m.precioUnitario,
+                        m.documento,
+                        m.nota,
+                        m.rutUsuario
+                );
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar movimientos", e);
+        }
     }
 
     @Override
     public void agregar(Movimiento movimiento) {
-        try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(
-                rutaArchivo, StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
-            // FECHA_ISO|TIPO|SKU|CANTIDAD|PRECIO_UNIT|DOC|NOTA|RUT
-            pw.printf("%s|%s|%d|%d|%d|%s|%s|%s%n",
-                    movimiento.fecha.toString(), movimiento.tipo.name(), movimiento.sku, movimiento.cantidad, movimiento.precioUnitario,
-                    movimiento.documento == null ? "" : movimiento.documento, movimiento.nota == null ? "" : movimiento.nota, movimiento.rutUsuario);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        cache.add(movimiento);
+        guardar();
     }
 
     @Override
     public List<Movimiento> listarPorSku(int sku) {
-        if (!Files.exists(rutaArchivo)) return List.of();
-        List<Movimiento> movimientos = new ArrayList<>();
-        try (BufferedReader br = Files.newBufferedReader(rutaArchivo)) {
-            for (String linea; (linea = br.readLine()) != null; ) {
-                String[] campos = linea.split("\\|", -1);
-                if (campos.length < 8 || Integer.parseInt(campos[2]) != sku) continue;
-                TipoMovimiento tipo = TipoMovimiento.valueOf(campos[1]);
-                int cantidad = Integer.parseInt(campos[3]);
-                int precioUnitario = Integer.parseInt(campos[4]);
-                String documento = campos[5];
-                String nota = campos[6];
-                String rut = campos[7];
-                Movimiento m = switch (tipo) {
-                    case VENTA -> new Venta(sku, cantidad, precioUnitario, documento, nota, rut);
-                    case COMPRA -> new Compra(sku, cantidad, precioUnitario, documento, nota, rut);
-                };
-                try {
-                    m.fecha = Instant.parse(campos[0]);
-                } catch (Exception ignored) {
-                }
-                movimientos.add(m);
+        List<Movimiento> resultado = new ArrayList<>();
+        for (Movimiento m : cache) {
+            if (m.sku == sku) {
+                resultado.add(m);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-        return movimientos;
+        return resultado;
+    }
+
+    // ESTE ES EL MÉTODO QUE FALTABA Y QUE SOLUCIONA TU ERROR
+    @Override
+    public List<Movimiento> listar() {
+        return new ArrayList<>(cache);
     }
 }
