@@ -9,7 +9,19 @@
     <Grid>
         <StackPanel Margin="20">
             <TextBlock Text="Historial de Movimientos" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
-            <DataGrid x:Name="MovimientosDataGrid" Height="500" AutoGenerateColumns="True" IsReadOnly="True"/>
+            <DataGrid x:Name="MovimientosDataGrid" Height="500" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}" Width="150"/>
+                    <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="80"/>
+                    <DataGridTextColumn Header="SKU" Binding="{Binding Sku}" Width="60"/>
+                    <DataGridTextColumn Header="Cant." Binding="{Binding Cantidad}" Width="60"/>
+                    <DataGridTextColumn Header="Precio Unit." Binding="{Binding PrecioUnitario}" Width="100"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="100"/>
+                    <DataGridTextColumn Header="RUT Usuario" Binding="{Binding RutUsuario}" Width="110"/>
+                    <DataGridTextColumn Header="Documento" Binding="{Binding Documento}" Width="110"/>
+                    <DataGridTextColumn Header="Nota" Binding="{Binding Nota}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Window>
